@@ -23,6 +23,5 @@ foo.anotherMethod();
 // VD: Foo.someMethod()
 
 //  ===================================================
-// => static thuộc về class và chỉ class mới có thể gọi được static method hoặc static variable ta không thể gọi static method từ một instance
+// => static thuộc về class và chỉ class mới có thể gọi được static method hoặc static variable, ta không thể gọi static method từ một instance
 // - static method được sử dụng khi ta không đòi hỏi phải tạo ra một object để sử dụng method đó.
-// - Bản chất của instance method
