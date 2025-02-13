@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:15
+    ports:
+      - 5455:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data/pgdata
+    networks:
+      - my_network
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=1
+      - POSTGRES_USER=admin
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    restart: unless-stopped
+  web:
+    image: odoo:17.0
+    depends_on:
+      - db
+    ports:
+      - "8079:8069"
+    volumes:
+      - ./addons:/mnt/extra-addons
+      - web_data:/var/lib/odoo
+    networks:
+      - my_network
+    environment:
+      - HOST=db
+      - USER=admin
+      - PASSWORD=1
+    command: --dev=all
+    restart: unless-stopped
+
+volumes:
+  db_data:
+    driver: local
+  web_data:
+    driver: local
+
+networks:
+  my_network:
+    driver: bridge
