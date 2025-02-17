@@ -8,10 +8,12 @@ Docker workflow image: ![img.png](img/img.png)
 + Tạo Dockerfile -> build ra thành 1 Docker Image -> Run docker image -> Container chạy và vào localhost theo port đã cấu hình
 + Tạo file docker-compose.yml -> docker compose up -> Container chạy và vào localhost theo port đã cấu hình
 
+
 # Dockerfile
 B1: Tạo 1 file Dockerfile
 B2: Build bằng file Dockerfile để tạo ra Docker Image (VD: docker build -t my_image:1.0.0 .)
 B3: Chạy Docker Image -> Khởi tạo ra 1 container của image (VD: docker run --name demo_container -d -p 80:80 -rm my_image:1.0.0)
+
 
 # Docker compose file
 B1: Tạo 1 file docker-compose.yml
@@ -28,4 +30,25 @@ VD:
 -> Lên Dockerhub tìm đến image odoo với version được cấu hình trong FROM và pull về chạy
 -> Ngoài ra khác biệt khi chạy Dockerfile đấy là bên cạnh việc pull image về và chạy thì nó còn chạy các lệnh đã được
 cấu hình sẵn trong Dockerfile
+
+
+# Docker Volume (Persist Data)
+- Vấn đề:
++ Khi không cấu hình docker volume thì mỗi khi làm việc với dữ liệu trong database như CRUD, những dữ liệu trong database
+sẽ chỉ lưu bên trong container, và mỗi khi ta build lại container đều sẽ khiến container đó bị mất dữ liệu.
+
+- Cách giải quyết:
++ Volume được sinh ra để giải quyết vấn đề đó, volume dùng để lưu data của container ra bên ngoài container, điều này
++ giúp cho mỗi lần xóa container và build lại một container mới sẽ giúp giữ được data cũ thông qua volume.
++ Data sẽ chỉ mất khi ta xóa volume của container đi.
+
+Cách 1: Tạo volume qua CLI
+B1: Tạo một volume tên là todo-db (docker volume create todo-db -> lệnh này sẽ tạo một thư mục trong /var/lib/docker/volumes)
+B2: Build container từ image và mount container với volume đã được tạo để có thể lấy, cập nhật hoặc tạo dữ liệu trên
+volume có sẵn trước đó.
+
+Cách 2: Tạo volume thông qua file docker-compose.yml
+B1: Khai báo volume trong các container nằm trong services của file. (bao gồm tên thư mục và đường dẫn đến thư mục đó)
+B2: Khai báo volume ở bên ngoài services, và set driver là local (điều này nghĩa là volume sẽ được tạo khi build container, 
+và sẽ được lưu theo địa chỉ là local -> Từ đó, sẽ tự động mount folder trong container với volume bên ngoài).
 
