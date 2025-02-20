@@ -52,3 +52,28 @@ B1: Khai báo volume trong các container nằm trong services của file. (bao 
 B2: Khai báo volume ở bên ngoài services, và set driver là local (điều này nghĩa là volume sẽ được tạo khi build container, 
 và sẽ được lưu theo địa chỉ là local -> Từ đó, sẽ tự động mount folder trong container với volume bên ngoài).
 
+
+# Docker Network
+- Vấn đề:
++ Một bài toán được đề ra là tạo ra 2 container là web và database, nhưng bản chất của các container là sự độc lập, riêng lẻ,
+không liên quan, không thể nói chuyện, tương tác với những thứ bên ngoài. Vậy làm thế nào để 2 container có thể kết nối
+hoặc nói chuyện được với nhau?
+
+- Cách giải quyết:
++ Ta sẽ sử dụng network để 2 hoặc nhiều container có thể nói chuyện và tương tác với nhau thông qua việc sử dụng chung 1 network.
+
+# Docker compose
+- Vấn đề:
++ Quy trình thông thường để build ra 1 container đó là ta viết Dockerfile để build ra 1 image hoặc pull image từ Dockerhub
+về, sau đó chạy lệnh nhiều lần để build ra đc 2 image và 2 container web và db, chưa kể ta còn phải cấu hình các container
+liên quan sử dụng chung 1 network, và các biến môi trường,... => Tốn rất nhiều thời gian, thao tác chạy lệnh, maintain khó.
+
+- Cách giải quyết:
++ Ta sẽ sử dụng docker-compose, dễ hiểu thì đây là một file có thể dung hợp lại tất cả các bước thao tác trên trong 
+1 file và chạy => Tối ưu, dễ maintain và không tốn nhiều thao tác chạy lệnh, minh bạch, nhìn trực quan,...
+
+- Những thành phần trong file docker-compose.yml
++ version: Đây không phải phiên bản của Docker hay Docker compose, mà đây là phiên bản của file compose format, khi điền
+một phiên bản thì khi build docker sẽ đọc ra được version đã được định nghĩa riêng của docker, và sử dụng docker engine
+tương ứng để build.
++ 
